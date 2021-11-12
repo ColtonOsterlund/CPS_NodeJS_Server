@@ -105,10 +105,71 @@ app.get("/api/cows/:cow_id/calciulate_tests", authorizeUser, (req, res) => {
 })
 
 
+
+
 app.post("/api/cows/:cow_id/calciulate_tests", authorizeUser, (req, res) => {
 
+    getConnection().query("SELECT * FROM cow WHERE cow_id = ? AND user_id = ?", [encrypt(req.params.cow_id), encrypt(req.header("user_id"))], (err, rows, fields) => {
+ 
+        if(err != null){
+            return res.status(500).send(err)
+        }
+        
+        var id = encrypt(req.body.id)
+        var calciulate_test_id = encrypt(req.body.calciulate_test_id)
+        var units = encrypt(req.body.units)
+        var millivolts = encrypt(req.body.millivolts)
+        var result = encrypt(req.body.result)
+        var milk_fever = encrypt(req.body.milk_fever)
+        var follow_up_num = encrypt(req.body.follow_up_num)
+        var sync_flag = encrypt(req.body.sync_flag)
+        var deleted_flag = encrypt(req.body.deleted_flag)
+        var days_in_milk = rows[0].days_in_milk
+        var dry_off_day = rows[0].dry_off_day
+        var mastitis_history = rows[0].mastitis_history
+        var method_of_dry_off = rows[0].method_of_dry_off
+        var daily_milk_average = rows[0].daily_milk_average
+        var parity = rows[0].parity
+        var reproduction_status = rows[0].reproduction_status
+        var number_of_times_bred = rows[0].number_of_times_bred
+        var farm_breeding_index = rows[0].farm_breeding_index
+        var lactation_number = rows[0].lactation_number
+        var days_carried_calf_if_pregnant = rows[0].days_carried_calf_if_pregnant
+        var projected_due_date = rows[0].projected_due_date
+        var current_305_day_milk = rows[0].current_305_day_milk
+        var current_somatic_cell_count = rows[0].current_somatic_cell_count
+        var linear_score_at_last_test = rows[0].linear_score_at_last_test
+        var date_of_last_clinical_mastitis = rows[0].date_of_last_clinical_mastitis
+        var chain_visible_id = rows[0].chain_visible_id
+        var animal_registration_no_nlid = rows[0].animal_registration_no_nlid
+        var dam_breed = rows[0].dam_breed
+        var culled = rows[0].culled
+        var cow_id = encrypt(req.params.cow_id)
+        var user_id = encrypt(req.header("user_id"))
+    
+        getConnection().query("INSERT INTO calciulate_tests (id, calciulate_test_id, units, millivolts, result, milk_fever, folllow_up_num, sync_flag, deleted_flag, days_in_milk, "
+        + "dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, "
+        + " projected_due_date, current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, cow_id, user_id) "
+        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+        [id, calciulate_test_id, units, millivolts, result, milk_fever, follow_up_num, sync_flag, deleted_flag, days_in_milk, dry_off_day, 
+        mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, 
+        days_carried_calf_if_pregnant, projected_due_date, current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis,
+        chain_visible_id, animal_registration_no_nlid, dam_breed, culled, cow_id, user_id], (err, rows, fields) => {
+     
+            if(err != null){
+                return res.status(500).send(err)
+            }
+            
+            return res.status(200).send("Success")
+    
+        })
+
+
+    })
     
 })
+
+
 
 
 app.put("/api/cows/:cow_id", authorizeUser, (req, res) => {
