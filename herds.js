@@ -1,6 +1,6 @@
 app.get("/api/herds", authorizeUser, (req, res) => {
 
-    getConnection().query("SELECT * FROM herds", [], (err, rows, fields) => {
+    getConnection().query("SELECT * FROM herds WHERE user_id = ?", [encrypt(req.header("user_id"))], (err, rows, fields) => {
  
         if(err != null){
             return res.status(500).send(err)
@@ -33,7 +33,7 @@ app.get("/api/herds", authorizeUser, (req, res) => {
 
 app.get("/api/herds/:herd_id", authorizeUser, (req, res) => {
 
-    getConnection().query("SELECT * FROM herds WHERE herd_id = ?", [req.params.herd_id], (err, rows, fields) => {
+    getConnection().query("SELECT * FROM herds WHERE herd_id = ? AND user_id = ?", [encrypt(req.params.herd_id), encrypt(req.header("user_id"))], (err, rows, fields) => {
  
         if(err != null){
             return res.status(500).send(err)
@@ -66,7 +66,7 @@ app.get("/api/herds/:herd_id", authorizeUser, (req, res) => {
 
 app.get("/api/herds/:herd_id/cows", authorizeUser, (req, res) => {
 
-    getConnection().query("SELECT * FROM cows WHERE herd_id = ?", [req.params.herd_id], (err, rows, fields) => {
+    getConnection().query("SELECT * FROM cows WHERE herd_id = ? AND user_id = ?", [encrypt(req.params.herd_id), encrypt(req.header("user_id"))], (err, rows, fields) => {
  
         if(err != null){
             return res.status(500).send(err)
@@ -128,7 +128,7 @@ app.post("/api/herds", authorizeUser, (req, res) => {
     var deleted_flag = encrypt(req.body.deleted_flag)
 	var user_id = encrypt(req.header("user_id"))
 
-    getConnection().query("INSERT INTO herd (id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+    getConnection().query("INSERT INTO herds (id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
     [id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id], (err, rows, fields) => {
  
         if(err != null){
@@ -169,10 +169,10 @@ app.post("/api/herds/:herd_id/cows", authorizeUser, (req, res) => {
     var modify_date = encrypt(req.body.modify_date),
     var sync_flag = encrypt(req.body.sync_flag),
     var deleted_flag = encrypt(req.body.deleted_flag),
-    var herd_id = encrypt(req.body.herd_id),
-    var user_id = encrypt(req.body.user_id)
+    var herd_id = encrypt(req.params.herd_id),
+    var user_id = encrypt(req.header("user_id"))
 
-    getConnection().query("INSERT INTO cow (id, cow_id, days_in_milk, dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, projected_due_date, "
+    getConnection().query("INSERT INTO cows (id, cow_id, days_in_milk, dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, projected_due_date, "
     + "current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, modify_date, sync_flag, deleted_flag, herd_id, user_id)" 
     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
     [id, cow_id, days_in_milk, dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, projected_due_date, 
@@ -191,11 +191,40 @@ app.post("/api/herds/:herd_id/cows", authorizeUser, (req, res) => {
 
 app.put("/api/herds/:herd_id", authorizeUser, (req, res) => {
 
+    var id = encrypt(req.body.id)
+    var herd_id = encrypt(req.body.herd_id)
+	var location = encrypt(req.body.location)
+	var milkingSystem = encrypt(req.body.milkingSystem)
+	var pin = encrypt(req.body.pin)
+    var modify_date = encrypt(req.body.modify_date)
+    var sync_flag = encrypt(req.body.sync_flag)
+    var deleted_flag = encrypt(req.body.deleted_flag)
+	var user_id = encrypt(req.header("user_id"))
+
+    getConnection().query("UPDATE herds SET id = ?, herd_id = ?, location = ?, milkingSystem = ?, pin = ?, modify_date = ?, sync_flag = ?, deleted_flag= ?, user_id = ? WHERE herd_id = ? AND user_id = ?", 
+    [id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id, encrypt(req.params.herd_id), encrypt(req.header("user_id"))], (err, rows, fields) => {
+ 
+        if(err != null){
+            return res.status(500).send(err)
+        }
+        
+        return res.status(200).send("Success")
+
+    })
 
 })
 
 
 app.delete("/api/herds/:herd_id", authorizeUser, (req, res) => {
 
+    getConnection().query("DELETE FROM herds WHERE herd_id = ? AND user_id = ?", [encrypt(req.params.herd_id), encrypt(req.header("user_id"))], (err, rows, fields) => {
+ 
+        if(err != null){
+            return res.status(500).send(err)
+        }
+        
+        return res.status(200).send("Success")
+
+    })
 
 })
