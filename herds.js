@@ -118,13 +118,35 @@ app.get("/api/herds/:herd_id/cows", authorizeUser, (req, res) => {
 
 app.post("/api/herds", authorizeUser, (req, res) => {
 
+    var id = encrypt(req.body.id)
+    var herd_id = encrypt(req.body.herd_id)
+	var location = encrypt(req.body.location)
+	var milkingSystem = encrypt(req.body.milkingSystem)
+	var pin = encrypt(req.body.pin)
+    var modify_date = encrypt(req.body.modify_date)
+    var sync_flag = encrypt(req.body.sync_flag)
+    var deleted_flag = encrypt(req.body.deleted_flag)
+	var user_id = encrypt(req.header("user_id"))
+
+    getConnection().query("INSERT INTO herd (id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, userID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+    [id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id], (err, rows, fields) => {
+ 
+        if(err != null){
+            return res.status(500).send(err)
+        }
+        
+        return res.status(200).send(JSON.stringify(jsonObjects))
+
+    })
 
 })
+
 
 app.post("/api/herds/:herd_id/cows", authorizeUser, (req, res) => {
 
 
 })
+
 
 app.put("/api/herds/:herd_id", authorizeUser, (req, res) => {
 
