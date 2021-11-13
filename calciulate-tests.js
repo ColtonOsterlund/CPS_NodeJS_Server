@@ -53,8 +53,6 @@ app.get("/api/calciulate_tests/:calciulate_test_id", authorizeUser, (req, res) =
 
 })
 
-
-
 app.put("/api/calciulate_tests/:calciulate_test_id", authorizeUser, (req, res) => {
 
     var id = encrypt(req.body.id)
@@ -106,8 +104,6 @@ app.put("/api/calciulate_tests/:calciulate_test_id", authorizeUser, (req, res) =
 
     })
 })
-
-
 
 app.delete("/api/calciulate_tests/:calciulate_test_id", authorizeUser, (req, res) => {
 

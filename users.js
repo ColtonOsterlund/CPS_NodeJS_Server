@@ -25,19 +25,15 @@ app.get("/api/users", authorizeUser, (req, res) => {
 
 })
 
-
 app.get("/api/users/logout", authorizeUser, (req, res) => {
 
 
 })
 
-
-
 app.post("/api/users", authorizeUser, (req, res) => {
 
 
 })
-
 
 app.post("/api/users/login", authorizeUser, (req, res) => {
 
