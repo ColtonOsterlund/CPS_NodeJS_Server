@@ -1,18 +1,23 @@
-app.get("/api/users", authorizeUser, (req, res) => {
+var express = require('express')
+router = express.Router()
+const { v4: uuidv4 } = require("uuid")
+var database = require('./database')
 
-    getConnection().query("SELECT * FROM users", [], (err, rows, fields) => {
- 
-        if(err != null){
+router.get("/api/users", (req, res) => {
+
+    database().query("SELECT * FROM users", [], (err, rows, fields) => {
+
+        if (err != null) {
             return res.status(500).send(err)
         }
-        
+
         var jsonObjects = []
 
-        objects.forEach(function(user){
+        rows.forEach(function (user) {
             var userObject = {
-                id: decrypt(user.id),
-                email: decrypt(user.email),
-                admin_flag: decrypt(user.admin_flag)
+                id: database.decrypt(user.id),
+                email: database.decrypt(user.email),
+                admin_flag: database.decrypt(user.admin_flag)
             }
 
             jsonObjects.push(userObject)
@@ -25,17 +30,23 @@ app.get("/api/users", authorizeUser, (req, res) => {
 
 })
 
-app.get("/api/users/logout", authorizeUser, (req, res) => {
+router.get("/api/users/logout", (req, res) => {
+
+    if(req.header("user_id") == null){
+        return res.status(400).send("user_id header is null")
+    }
 
 
 })
 
-app.post("/api/users", authorizeUser, (req, res) => {
+router.post("/api/users", (req, res) => {
 
 
 })
 
-app.post("/api/users/login", authorizeUser, (req, res) => {
+router.post("/api/users/login", (req, res) => {
 
 
 })
+
+module.exports = router;
