@@ -1,7 +1,7 @@
 var express = require('express')
 router = express.Router()
 const { v4: uuidv4 } = require("uuid")
-var database = require('./database')
+var database = require('../database')
 
 router.get("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
 
