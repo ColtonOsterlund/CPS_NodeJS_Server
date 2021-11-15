@@ -36,16 +36,19 @@ router.get("/api/users/logout", (req, res) => {
         return res.status(400).send("user_id header is null")
     }
 
+    return res.status(500).send("Route neot yet implemented")
 
 })
 
 router.post("/api/users", (req, res) => {
 
+    return res.status(500).send("Route neot yet implemented")
 
 })
 
 router.post("/api/users/login", (req, res) => {
 
+    return res.status(500).send("Route neot yet implemented")
 
 })
 
