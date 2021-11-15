@@ -36,7 +36,15 @@ router.get("/api/users/logout", (req, res) => {
         return res.status(400).send("user_id header is null")
     }
 
-    return res.status(500).send("Route neot yet implemented")
+    database().query("INSERT INTO blacklisted_jwts (token, expiration) VALUES ?", [req.header("user_authentication"), ], (err, rows, fields) => {
+
+        if (err != null) {
+            return res.status(500).send(err)
+        }
+
+        return res.status(200).send(JSON.stringify(jsonObjects))
+
+    })
 
 })
 
