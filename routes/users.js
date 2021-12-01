@@ -2,7 +2,6 @@ var express = require('express')
 router = express.Router()
 const { v4: uuidv4 } = require("uuid")
 var database = require('../database')
-const jwt = require('jsonwebtoken');
 
 
 router.get("/api/users", (req, res) => {
@@ -84,26 +83,6 @@ router.get("/api/users/logout", (req, res) => {
     })
 
 })
-
-
-//extra router functions 
-router = {
-    authenticateToken: (req, res, next) => {
-      const token = req.header("user_authentication")
-  
-      if (token == null)
-        return res.status(403).json({ message: 'Invalid token' });
-  
-      jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
-        if (error) return res.status(403).json({ message: 'Invalid token' });
-  
-        req.user = user;
-        req.token = token;
-  
-        next();
-      });
-    },
-};
 
 
 
