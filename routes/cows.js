@@ -41,7 +41,7 @@ router.get("/api/cows/:cow_id", (req, res) => {
                 animal_registration_no_nlid: database.decrypt(cow.animal_registration_no_nlid),
                 dam_breed: database.decrypt(cow.dam_breed),
                 culled: database.decrypt(cow.culled),
-                modify_date: database.decrypt(cow.modify_date),
+                modify_date: cow.modify_date,
                 sync_flag: database.decrypt(cow.sync_flag),
                 deleted_flag: database.decrypt(cow.deleted_flag),
                 herd_id: database.decrypt(cow.herd_id),

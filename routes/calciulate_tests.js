@@ -100,7 +100,7 @@ router.put("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
     var cow_id = database.encrypt(req.params.cow_id)
     var user_id = database.encrypt(req.header("user_id"))
 
-    database().query("UPDATE calciulate_tests id = ?, calciulate_test_id = ?, units = ?, millivolts = ?, result = ?, milk_fever = ?, folllow_up_num = ?, sync_flag = ?, deleted_flag = ?, days_in_milk = ?, "
+    database().query("UPDATE calciulate_tests SET id = ?, calciulate_test_id = ?, units = ?, millivolts = ?, result = ?, milk_fever = ?, folllow_up_num = ?, sync_flag = ?, deleted_flag = ?, days_in_milk = ?, "
         + "dry_off_day = ?, mastitis_history = ?, method_of_dry_off = ?, daily_milk_average = ?, parity = ?, reproduction_status = ?, number_of_times_bred = ?, farm_breeding_index = ?, lactation_number = ?, days_carried_calf_if_pregnant = ?, "
         + " projected_due_date = ?, current_305_day_milk = ?, current_somatic_cell_count = ?, linear_score_at_last_test = ?, date_of_last_clinical_mastitis = ?, chain_visible_id = ?, animal_registration_no_nlid = ?, dam_breed = ?, culled = ?, cow_id = ?, user_id = ? "
         + "WHERE calciulate_test_id = ? AND user_id = ?",

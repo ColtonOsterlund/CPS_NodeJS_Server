@@ -24,7 +24,7 @@ router.get("/api/herds", (req, res) => {
                 location: database.decrypt(herd.location),
                 milking_system: database.decrypt(herd.milking_system),
                 pin: database.decrypt(herd.pin),
-                modify_date: database.decrypt(herd.modify_date),
+                modify_date: herd.modify_date,
                 sync_flag: database.decrypt(herd.sync_flag),
                 deleted_flag: database.decrypt(herd.deleted_flag),
                 user_id: database.decrypt(herd.user_id)
@@ -61,7 +61,7 @@ router.get("/api/herds/:herd_id", (req, res) => {
                 location: database.decrypt(herd.location),
                 milking_system: database.decrypt(herd.milking_system),
                 pin: database.decrypt(herd.pin),
-                modify_date: database.decrypt(herd.modify_date),
+                modify_date: herd.modify_date,
                 sync_flag: database.decrypt(herd.sync_flag),
                 deleted_flag: database.decrypt(herd.deleted_flag),
                 user_id: database.decrypt(herd.user_id)
@@ -115,7 +115,7 @@ router.get("/api/herds/:herd_id/cows", (req, res) => {
                 animal_registration_no_nlid: database.decrypt(cow.animal_registration_no_nlid),
                 dam_breed: database.decrypt(cow.dam_breed),
                 culled: database.decrypt(cow.culled),
-                modify_date: database.decrypt(cow.modify_date),
+                modify_date: cow.modify_date,
                 sync_flag: database.decrypt(cow.sync_flag),
                 deleted_flag: database.decrypt(cow.deleted_flag),
                 herd_id: database.decrypt(cow.herd_id),
@@ -149,7 +149,7 @@ router.post("/api/herds", (req, res) => {
         herdValues.push(database.encrypt(herd.location))
         herdValues.push(database.encrypt(herd.milking_system))
         herdValues.push(database.encrypt(herd.pin))
-        herdValues.push(database.encrypt(herd.modify_date))
+        herdValues.push(herd.modify_date)
         herdValues.push(database.encrypt(herd.sync_flag))
         herdValues.push(database.encrypt(herd.deleted_flag))
         herdValues.push(database.encrypt(req.header("user_id")))
@@ -204,7 +204,7 @@ router.post("/api/herds/:herd_id/cows", (req, res) => {
         cowValues.push(database.encrypt(cow.animal_registration_no_nlid))
         cowValues.push(database.encrypt(cow.dam_breed))
         cowValues.push(database.encrypt(cow.culled))
-        cowValues.push(database.encrypt(cow.modify_date))
+        cowValues.push(cow.modify_date)
         cowValues.push(database.encrypt(cow.sync_flag))
         cowValues.push(database.encrypt(cow.deleted_flag))
         cowValues.push(database.encrypt(req.params.herd_id))
@@ -237,7 +237,7 @@ router.put("/api/herds/:herd_id", (req, res) => {
     var location = database.encrypt(req.body.location)
     var milkingSystem = database.encrypt(req.body.milkingSystem)
     var pin = database.encrypt(req.body.pin)
-    var modify_date = database.encrypt(req.body.modify_date)
+    var modify_date = req.body.modify_date
     var sync_flag = database.encrypt(req.body.sync_flag)
     var deleted_flag = database.encrypt(req.body.deleted_flag)
     var user_id = database.encrypt(req.header("user_id"))
