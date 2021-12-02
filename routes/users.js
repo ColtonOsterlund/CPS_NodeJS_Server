@@ -20,7 +20,7 @@ router.get("/api/users", authenticateToken, (req, res) => {
             var userObject = {
                 id: user.id,
                 email: decrypt(user.email),
-                admin_flag: decrypt(user.admin_flag)
+                admin_flag: user.admin_flag
             }
 
             jsonObjects.push(userObject)

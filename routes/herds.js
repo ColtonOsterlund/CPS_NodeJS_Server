@@ -23,8 +23,8 @@ router.get("/api/herds", authenticateToken, (req, res) => {
                 milking_system: decrypt(herd.milking_system),
                 pin: decrypt(herd.pin),
                 modify_date: herd.modify_date,
-                sync_flag: decrypt(herd.sync_flag),
-                deleted_flag: decrypt(herd.deleted_flag),
+                sync_flag: herd.sync_flag,
+                deleted_flag: herd.deleted_flag,
                 user_id: herd.user_id
             }
 
@@ -56,8 +56,8 @@ router.get("/api/herds/:herd_id", authenticateToken, (req, res) => {
                 milking_system: decrypt(herd.milking_system),
                 pin: decrypt(herd.pin),
                 modify_date: herd.modify_date,
-                sync_flag: decrypt(herd.sync_flag),
-                deleted_flag: decrypt(herd.deleted_flag),
+                sync_flag: herd.sync_flag,
+                deleted_flag: herd.deleted_flag,
                 user_id: herd.user_id
             }
 
@@ -104,10 +104,10 @@ router.get("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
                 chain_visible_id: decrypt(cow.chain_visible_id),
                 animal_registration_no_nlid: decrypt(cow.animal_registration_no_nlid),
                 dam_breed: decrypt(cow.dam_breed),
-                culled: decrypt(cow.culled),
+                culled: cow.culled,
                 modify_date: cow.modify_date,
-                sync_flag: decrypt(cow.sync_flag),
-                deleted_flag: decrypt(cow.deleted_flag),
+                sync_flag: cow.sync_flag,
+                deleted_flag: cow.deleted_flag,
                 herd_id: cow.herd_id,
                 user_id: cow.user_id
             }
@@ -136,8 +136,8 @@ router.post("/api/herds", authenticateToken, (req, res) => {
         herdValues.push(encrypt(herd.milking_system))
         herdValues.push(encrypt(herd.pin))
         herdValues.push(herd.modify_date)
-        herdValues.push(encrypt(herd.sync_flag))
-        herdValues.push(encrypt(herd.deleted_flag))
+        herdValues.push(herd.sync_flag)
+        herdValues.push(herd.deleted_flag)
         herdValues.push(req.user.id)
 
         values.push(herdValues)
@@ -186,10 +186,10 @@ router.post("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
         cowValues.push(encrypt(cow.chain_visible_id))
         cowValues.push(encrypt(cow.animal_registration_no_nlid))
         cowValues.push(encrypt(cow.dam_breed))
-        cowValues.push(encrypt(cow.culled))
+        cowValues.push(cow.culled)
         cowValues.push(cow.modify_date)
-        cowValues.push(encrypt(cow.sync_flag))
-        cowValues.push(encrypt(cow.deleted_flag))
+        cowValues.push(cow.sync_flag)
+        cowValues.push(cow.deleted_flag)
         cowValues.push(req.params.herd_id)
         cowValues.push(req.user.id)
 
@@ -218,8 +218,8 @@ router.put("/api/herds/:herd_id", authenticateToken, (req, res) => {
     var milkingSystem = encrypt(req.body.milkingSystem)
     var pin = encrypt(req.body.pin)
     var modify_date = req.body.modify_date
-    var sync_flag = encrypt(req.body.sync_flag)
-    var deleted_flag = encrypt(req.body.deleted_flag)
+    var sync_flag = req.body.sync_flag
+    var deleted_flag = req.body.deleted_flag
     var user_id = req.user.id
 
     database().query("UPDATE herds SET id = ?, herd_id = ?, location = ?, milkingSystem = ?, pin = ?, modify_date = ?, sync_flag = ?, deleted_flag= ?, user_id = ? WHERE herd_id = ? AND user_id = ?",

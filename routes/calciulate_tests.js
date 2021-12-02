@@ -43,9 +43,9 @@ router.get("/api/calciulate_tests/:calciulate_test_id", authenticateToken, (req,
                 chain_visible_id: decrypt(calciulate_test.chain_visible_id),
                 animal_registration_no_nlid: decrypt(calciulate_test.animal_registration_no_nlid),
                 dam_breed: decrypt(calciulate_test.dam_breed),
-                culled: decrypt(calciulate_test.culled),
-                sync_flag: decrypt(calciulate_test.sync_flag),
-                deleted_flag: decrypt(calciulate_test.deleted_flag),
+                culled: calciulate_test.culled,
+                sync_flag: calciulate_test.sync_flag,
+                deleted_flag: calciulate_test.deleted_flag,
                 cow_id: calciulate_test.cow_id,
                 user_id: calciulate_test.user_id
             }
@@ -90,7 +90,7 @@ router.put("/api/calciulate_tests/:calciulate_test_id", authenticateToken, (req,
     var chain_visible_id = encrypt(req.body.chain_visible_id)
     var animal_registration_no_nlid = encrypt(req.body.animal_registration_no_nlid)
     var dam_breed = encrypt(req.body.dam_breed)
-    var culled = encrypt(req.body.culled)
+    var culled = req.body.culled
     var cow_id = req.params.cow_id
     var user_id = req.user.id
 
