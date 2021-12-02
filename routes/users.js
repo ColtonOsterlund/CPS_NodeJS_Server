@@ -43,7 +43,7 @@ router.post("/api/users", (req, res) => {
     req.body.users.forEach(function (user) {
         var userValues = []
 
-        bcrypt.hash(req.body.password, 10, function(err, hashPass){
+        bcrypt.hash(user.password, 10, function(err, hashPass){
             if(err){
                 console.log("error while hashing password: " + err)
                 return res.status(500).send(JSON.stringify(err))	
