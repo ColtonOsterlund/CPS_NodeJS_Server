@@ -2,7 +2,7 @@ var express = require('express')
 router = express.Router()
 const { v4: uuidv4 } = require("uuid")
 const bcrypt = require('bcryptjs')
-var database = require('../database')
+const { database, encrypt, decrypt } = require('../database')
 const { authenticateToken } = require('../middleware/authentication')
 
 
@@ -19,8 +19,8 @@ router.get("/api/users", authenticateToken, (req, res) => {
         rows.forEach(function (user) {
             var userObject = {
                 id: user.id,
-                email: database.decrypt(user.email),
-                admin_flag: database.decrypt(user.admin_flag)
+                email: decrypt(user.email),
+                admin_flag: decrypt(user.admin_flag)
             }
 
             jsonObjects.push(userObject)
@@ -50,18 +50,18 @@ router.post("/api/users", (req, res) => {
             }
             else{
                 userValues.push(uuidv4())
-                userValues.push(database.encrypt(user.email))
+                userValues.push(encrypt(user.email))
                 userValues.push(hashPass)
-                userValues.push(database.encrypt(user.first_name))
-                userValues.push(database.encrypt(user.last_name))
-                userValues.push(database.encrypt(user.main_address))
-                userValues.push(database.encrypt(user.secondary_address))
-                userValues.push(database.encrypt(user.city))
-                userValues.push(database.encrypt(user.province))
-                userValues.push(database.encrypt(user.country))
-                userValues.push(database.encrypt(user.zip_code))
-                userValues.push(database.encrypt(user.phone))
-                userValues.push(database.encrypt(user.admin_flag))
+                userValues.push(encrypt(user.first_name))
+                userValues.push(encrypt(user.last_name))
+                userValues.push(encrypt(user.main_address))
+                userValues.push(encrypt(user.secondary_address))
+                userValues.push(encrypt(user.city))
+                userValues.push(encrypt(user.province))
+                userValues.push(encrypt(user.country))
+                userValues.push(encrypt(user.zip_code))
+                userValues.push(encrypt(user.phone))
+                userValues.push(encrypt(user.admin_flag))
     
                 values.push(userValues)
 
@@ -86,7 +86,7 @@ router.post("/api/users", (req, res) => {
 
 router.post("/api/users/login", (req, res) => {
 
-    database().query("SELECT * FROM users where email = ?", [database.encrypt(req.body.email)], (err, rows, fields) => {
+    database().query("SELECT * FROM users where email = ?", [encrypt(req.body.email)], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))

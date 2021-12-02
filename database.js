@@ -9,30 +9,30 @@ const pool = mysql.createPool({ //connection pool
 	password: process.env.DB_PASSWORD, //find how to do this properly
 	database: process.env.DB_NAME
   })
-  
 
-module.exports = function(){
-	return pool
-}
+ module.exports = {
+	encrypt:(text) => {
+		if (text == null) {
+			return text;
+		}
+		var cipher = crypto.createCipher('aes-256-ctr', process.env.ENCRYPTION_KEY)
+		var crypted = cipher.update(text, 'utf8', 'hex')
+		crypted += cipher.final('hex')
+		return crypted
+	 },
+	 decrypt:(text) => {
+		if (text == null) {
+			return text;
+		}
+		var decipher = crypto.createDecipher('aes-256-ctr', process.env.ENCRYPTION_KEY)
+		var dec = decipher.update(text, 'hex', 'utf8')
+		dec += decipher.final('utf8')
+		return dec
+	 },
+	 database:() =>{
+		return pool
+	 }
 
-module.exports = function encrypt(text){
-	if (text == null) {
-		return text;
-	}
-	var cipher = crypto.createCipher('aes-256-ctr', process.env.ENCRYPTION_KEY)
-	var crypted = cipher.update(text, 'utf8', 'hex')
-	crypted += cipher.final('hex')
-	return crypted
- }
-
- module.exports = function decrypt(text){
-	if (text == null) {
-		return text;
-	}
-	var decipher = crypto.createDecipher('aes-256-ctr', process.env.ENCRYPTION_KEY)
-	var dec = decipher.update(text, 'hex', 'utf8')
-	dec += decipher.final('utf8')
-	return dec
  }
 
 
