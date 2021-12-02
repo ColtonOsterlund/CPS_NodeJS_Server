@@ -66,7 +66,7 @@ router.post("/api/users", (req, res) => {
         
     });
 
-    database().query(query, [values], (err, rows, fields) => {
+    database().query(query, values, (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))
