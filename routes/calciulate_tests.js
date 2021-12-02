@@ -47,7 +47,8 @@ router.get("/api/calciulate_tests/:calciulate_test_id", authenticateToken, (req,
                 sync_flag: calciulate_test.sync_flag,
                 deleted_flag: calciulate_test.deleted_flag,
                 cow_id: calciulate_test.cow_id,
-                user_id: calciulate_test.user_id
+                user_id: calciulate_test.user_id,
+                modify_date: calciulate_test.modify_date
             }
 
             jsonObjects.push(calciulate_testObject)
@@ -93,15 +94,16 @@ router.put("/api/calciulate_tests/:calciulate_test_id", authenticateToken, (req,
     var culled = req.body.culled
     var cow_id = req.params.cow_id
     var user_id = req.user.id
+    var modify_date = mySqlDateTimeNow()
 
     database().query("UPDATE calciulate_tests SET id = ?, calciulate_test_id = ?, units = ?, millivolts = ?, result = ?, milk_fever = ?, folllow_up_num = ?, sync_flag = ?, deleted_flag = ?, days_in_milk = ?, "
         + "dry_off_day = ?, mastitis_history = ?, method_of_dry_off = ?, daily_milk_average = ?, parity = ?, reproduction_status = ?, number_of_times_bred = ?, farm_breeding_index = ?, lactation_number = ?, days_carried_calf_if_pregnant = ?, "
-        + " projected_due_date = ?, current_305_day_milk = ?, current_somatic_cell_count = ?, linear_score_at_last_test = ?, date_of_last_clinical_mastitis = ?, chain_visible_id = ?, animal_registration_no_nlid = ?, dam_breed = ?, culled = ?, cow_id = ?, user_id = ? "
+        + " projected_due_date = ?, current_305_day_milk = ?, current_somatic_cell_count = ?, linear_score_at_last_test = ?, date_of_last_clinical_mastitis = ?, chain_visible_id = ?, animal_registration_no_nlid = ?, dam_breed = ?, culled = ?, cow_id = ?, user_id = ?, modify_date = ? "
         + "WHERE calciulate_test_id = ? AND user_id = ?",
         [id, calciulate_test_id, units, millivolts, result, milk_fever, follow_up_num, sync_flag, deleted_flag, days_in_milk, dry_off_day,
             mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number,
             days_carried_calf_if_pregnant, projected_due_date, current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis,
-            chain_visible_id, animal_registration_no_nlid, dam_breed, culled, cow_id, user_id, req.params.calciulate_test_id, req.user.id], (err, rows, fields) => {
+            chain_visible_id, animal_registration_no_nlid, dam_breed, culled, cow_id, user_id, modify_date, req.params.calciulate_test_id, req.user.id], (err, rows, fields) => {
 
                 if (err != null) {
                     return res.status(500).send(JSON.stringify(err))

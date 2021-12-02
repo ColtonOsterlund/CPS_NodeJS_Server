@@ -3,6 +3,7 @@ router = express.Router()
 const { v4: uuidv4 } = require("uuid")
 const { database, encrypt, decrypt } = require('../database')
 const { authenticateToken } = require('../middleware/authentication')
+const { mySqlDateTimeNow } = require('../utils/date_time')
 
 router.get("/api/herds", authenticateToken, (req, res) => {
 
@@ -124,7 +125,7 @@ router.get("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
 
 router.post("/api/herds", authenticateToken, (req, res) => {
 
-    var query = "INSERT INTO herds (id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id) VALUES ?"
+    var query = "INSERT INTO herds (id, herd_id, location, milkingSystem, pin, modify_date, user_id) VALUES ?"
 
     var values = []
 
@@ -135,9 +136,7 @@ router.post("/api/herds", authenticateToken, (req, res) => {
         herdValues.push(encrypt(herd.location))
         herdValues.push(encrypt(herd.milking_system))
         herdValues.push(encrypt(herd.pin))
-        herdValues.push(herd.modify_date)
-        herdValues.push(herd.sync_flag)
-        herdValues.push(herd.deleted_flag)
+        herdValues.push(mySqlDateTimeNow())
         herdValues.push(req.user.id)
 
         values.push(herdValues)
@@ -159,7 +158,7 @@ router.post("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
 
 
     var query = "INSERT INTO cows (id, cow_id, days_in_milk, dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, projected_due_date, "
-        + "current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, modify_date, sync_flag, deleted_flag, herd_id, user_id VALUES ?"
+        + "current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, modify_date, herd_id, user_id VALUES ?"
 
     var values = []
 
@@ -187,9 +186,7 @@ router.post("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
         cowValues.push(encrypt(cow.animal_registration_no_nlid))
         cowValues.push(encrypt(cow.dam_breed))
         cowValues.push(cow.culled)
-        cowValues.push(cow.modify_date)
-        cowValues.push(cow.sync_flag)
-        cowValues.push(cow.deleted_flag)
+        cowValues.push(mySqlDateTimeNow())
         cowValues.push(req.params.herd_id)
         cowValues.push(req.user.id)
 
@@ -217,13 +214,11 @@ router.put("/api/herds/:herd_id", authenticateToken, (req, res) => {
     var location = encrypt(req.body.location)
     var milkingSystem = encrypt(req.body.milkingSystem)
     var pin = encrypt(req.body.pin)
-    var modify_date = req.body.modify_date
-    var sync_flag = req.body.sync_flag
-    var deleted_flag = req.body.deleted_flag
+    var modify_date = mySqlDateTimeNow()
     var user_id = req.user.id
 
-    database().query("UPDATE herds SET id = ?, herd_id = ?, location = ?, milkingSystem = ?, pin = ?, modify_date = ?, sync_flag = ?, deleted_flag= ?, user_id = ? WHERE herd_id = ? AND user_id = ?",
-        [id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id, req.params.herd_id, req.user.id], (err, rows, fields) => {
+    database().query("UPDATE herds SET id = ?, herd_id = ?, location = ?, milkingSystem = ?, pin = ?, modify_date = ?, user_id = ? WHERE herd_id = ? AND user_id = ?",
+        [id, herd_id, location, milkingSystem, pin, modify_date, user_id, req.params.herd_id, req.user.id], (err, rows, fields) => {
 
             if (err != null) {
                 return res.status(500).send(JSON.stringify(err))

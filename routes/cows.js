@@ -114,7 +114,7 @@ router.post("/api/cows/:cow_id/calciulate_tests", authenticateToken, (req, res) 
 
     var query = "INSERT INTO calciulate_tests (id, calciulate_test_id, units, millivolts, result, milk_fever, folllow_up_num, sync_flag, deleted_flag, days_in_milk, "
         + "dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, "
-        + " projected_due_date, current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, cow_id, user_id) VALUES ?"
+        + " projected_due_date, current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, modify_date, cow_id, user_id) VALUES ?"
 
     var values = []
 
@@ -156,6 +156,7 @@ router.post("/api/cows/:cow_id/calciulate_tests", authenticateToken, (req, res) 
             calciulate_testValues.push(rows[0].animal_registration_no_nlid)
             calciulate_testValues.push(rows[0].dam_breed)
             calciulate_testValues.push(rows[0].culled)
+            calciulate_testValues.push(mySqlDateTimeNow())
             calciulate_testValues.push(req.params.cow_id)
             calciulate_testValues.push(req.user.id)
 
@@ -207,16 +208,14 @@ router.put("/api/cows/:cow_id", authenticateToken, (req, res) => {
     var animal_registration_no_nlid = encrypt(req.body.animal_registration_no_nlid)
     var dam_breed = encrypt(req.body.dam_breed)
     var culled = req.body.culled
-    var modify_date = encrypt(req.body.modify_date)
-    var sync_flag = req.body.sync_flag
-    var deleted_flag = req.body.deleted_flag
+    var modify_date = mySqlDateTimeNow()
     var herd_id = req.body.herd_id
     var user_id = req.user.id
 
     database().query("UPDATE cow SET id = ?, cow_id = ?, days_in_milk = ?, dry_off_day = ?, mastitis_history = ?, method_of_dry_off = ?, daily_milk_average = ?, parity = ?, reproduction_status = ?, number_of_times_bred = ?, farm_breeding_index = ?, lactation_number = ?, days_carried_calf_if_pregnant = ?, projected_due_date = ?, "
-        + "current_305_day_milk = ?, current_somatic_cell_count = ?, linear_score_at_last_test = ?, date_of_last_clinical_mastitis = ?, chain_visible_id = ?, animal_registration_no_nlid = ?, dam_breed = ?, culled = ?, modify_date = ?, sync_flag = ?, deleted_flag = ?, herd_id = ?, user_id = ? WHERE cow_id = ? AND user_id = ?",
+        + "current_305_day_milk = ?, current_somatic_cell_count = ?, linear_score_at_last_test = ?, date_of_last_clinical_mastitis = ?, chain_visible_id = ?, animal_registration_no_nlid = ?, dam_breed = ?, culled = ?, modify_date = ?, herd_id = ?, user_id = ? WHERE cow_id = ? AND user_id = ?",
         [id, cow_id, days_in_milk, dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, projected_due_date,
-            current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, modify_date, sync_flag, deleted_flag, herd_id, user_id, req.params.cow_id, req.user.id], (err, rows, fields) => {
+            current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, modify_date, herd_id, user_id, req.params.cow_id, req.user.id], (err, rows, fields) => {
 
                 if (err != null) {
                     return res.status(500).send(JSON.stringify(err))
