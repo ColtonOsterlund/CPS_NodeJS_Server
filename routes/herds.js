@@ -126,7 +126,7 @@ router.post("/api/herds", authenticateToken, (req, res) => {
 
     var query = "INSERT INTO herds (id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id) VALUES ?"
 
-    var values = [[]]
+    var values = []
 
     req.body.herds.forEach(function (herd) {
         var herdValues = []
@@ -143,7 +143,7 @@ router.post("/api/herds", authenticateToken, (req, res) => {
         values.push(herdValues)
     });
 
-    database().query(query, values, (err, rows, fields) => {
+    database().query(query, [values], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))
@@ -161,7 +161,7 @@ router.post("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
     var query = "INSERT INTO cows (id, cow_id, days_in_milk, dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, projected_due_date, "
         + "current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, modify_date, sync_flag, deleted_flag, herd_id, user_id VALUES ?"
 
-    var values = [[]]
+    var values = []
 
     req.body.cows.forEach(function (cow) {
         var cowValues = []
@@ -197,7 +197,7 @@ router.post("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
     });
 
 
-    database().query(query, values, (err, rows, fields) => {
+    database().query(query, [values], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))

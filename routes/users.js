@@ -38,7 +38,7 @@ router.post("/api/users", (req, res) => {
 
     var query = "INSERT INTO users (id, email, password, first_name, last_name, main_address, secondary_address, city, province, country, zip_code, phone) VALUES ?;"
 
-    var values = [[]]
+    var values = []
 
     req.body.users.forEach(function (user) {
         var userValues = []
@@ -66,7 +66,7 @@ router.post("/api/users", (req, res) => {
         
     });
 
-    database().query(query, values, (err, rows, fields) => {
+    database().query(query, [values], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))
