@@ -119,7 +119,16 @@ router.post("/api/users/login", (req, res) => {
 
 router.get("/api/users/logout", authenticateToken, (req, res) => {
 
-   
+    database().query("INSERT INTO blacklisted_jwts (token, expiration) VALUES (?, ?)", [token, req.user.exp], (err, rows, fields) => {
+
+        if (err != null) {
+            return res.status(500).send(JSON.stringify(err))
+        }
+        else{
+            return res.status(200).send(JSON.stringify("Success"))
+        }
+
+    })
 
 })
 
