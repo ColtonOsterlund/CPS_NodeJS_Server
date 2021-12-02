@@ -1,6 +1,7 @@
 var express = require('express')
 router = express.Router()
 const { v4: uuidv4 } = require("uuid")
+const bcrypt = require('bcryptjs')
 var database = require('../database')
 const { authenticateToken } = require('../middleware/authentication')
 
