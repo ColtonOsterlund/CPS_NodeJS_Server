@@ -36,7 +36,7 @@ router.get("/api/users", authenticateToken, (req, res) => {
 
 router.post("/api/users", (req, res) => {
 
-    var query = "INSERT INTO users (id, email, password, first_name, last_name, main_address, secondary_address, city, province, country, zip_code, phone, admin_flag) VALUES ?;"
+    var query = "INSERT INTO users (id, email, password, first_name, last_name, main_address, secondary_address, city, province, country, zip_code, phone) VALUES ?;"
 
     var values = [[]]
 
@@ -57,7 +57,6 @@ router.post("/api/users", (req, res) => {
             userValues.push(encrypt(user.country))
             userValues.push(encrypt(user.zip_code))
             userValues.push(encrypt(user.phone))
-            userValues.push(encrypt(user.admin_flag))
 
             values.push(userValues)
         }
@@ -67,7 +66,7 @@ router.post("/api/users", (req, res) => {
         
     });
 
-    database().query(query, values, (err, rows, fields) => {
+    database().query(query, [values], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))
