@@ -2,14 +2,12 @@ var express = require('express')
 router = express.Router()
 const { v4: uuidv4 } = require("uuid")
 var database = require('../database')
+const { authenticateToken } = require('../middleware/authentication')
 
-router.get("/api/herds", (req, res) => {
+router.get("/api/herds", authenticateToken, (req, res) => {
 
-    if(req.header("user_id") == null){
-        return res.status(400).send(JSON.stringify("user_id header is null"))
-    }
 
-    database().query("SELECT * FROM herds WHERE user_id = ?", [req.header("user_id")], (err, rows, fields) => {
+    database().query("SELECT * FROM herds WHERE user_id = ?", [req.user.id], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))
@@ -40,13 +38,9 @@ router.get("/api/herds", (req, res) => {
 
 })
 
-router.get("/api/herds/:herd_id", (req, res) => {
+router.get("/api/herds/:herd_id", authenticateToken, (req, res) => {
 
-    if(req.header("user_id") == null){
-        return res.status(400).send(JSON.stringify("user_id header is null"))
-    }
-
-    database().query("SELECT * FROM herds WHERE herd_id = ? AND user_id = ?", [req.params.herd_id, req.header("user_id")], (err, rows, fields) => {
+    database().query("SELECT * FROM herds WHERE herd_id = ? AND user_id = ?", [req.params.herd_id, req.user.id], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))
@@ -77,13 +71,9 @@ router.get("/api/herds/:herd_id", (req, res) => {
 
 })
 
-router.get("/api/herds/:herd_id/cows", (req, res) => {
+router.get("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
 
-    if(req.header("user_id") == null){
-        return res.status(400).send(JSON.stringify("user_id header is null"))
-    }
-
-    database().query("SELECT * FROM cows WHERE herd_id = ? AND user_id = ?", [req.params.herd_id, req.header("user_id")], (err, rows, fields) => {
+    database().query("SELECT * FROM cows WHERE herd_id = ? AND user_id = ?", [req.params.herd_id, req.user.id], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))
@@ -132,11 +122,7 @@ router.get("/api/herds/:herd_id/cows", (req, res) => {
 
 })
 
-router.post("/api/herds", (req, res) => {
-
-    if(req.header("user_id") == null){
-        return res.status(400).send(JSON.stringify(err))
-    }
+router.post("/api/herds", authenticateToken, (req, res) => {
 
     var query = "INSERT INTO herds (id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id) VALUES ?"
 
@@ -152,7 +138,7 @@ router.post("/api/herds", (req, res) => {
         herdValues.push(herd.modify_date)
         herdValues.push(database.encrypt(herd.sync_flag))
         herdValues.push(database.encrypt(herd.deleted_flag))
-        herdValues.push(req.header("user_id"))
+        herdValues.push(req.user.id)
 
         values.push(herdValues)
     });
@@ -169,11 +155,8 @@ router.post("/api/herds", (req, res) => {
 
 })
 
-router.post("/api/herds/:herd_id/cows", (req, res) => {
+router.post("/api/herds/:herd_id/cows", authenticateToken, (req, res) => {
 
-    if(req.header("user_id") == null){
-        return res.status(400).send(JSON.stringify("user_id header is null"))
-    }
 
     var query = "INSERT INTO cows (id, cow_id, days_in_milk, dry_off_day, mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number, days_carried_calf_if_pregnant, projected_due_date, "
         + "current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis, chain_visible_id, animal_registration_no_nlid, dam_breed, culled, modify_date, sync_flag, deleted_flag, herd_id, user_id VALUES ?"
@@ -208,7 +191,7 @@ router.post("/api/herds/:herd_id/cows", (req, res) => {
         cowValues.push(database.encrypt(cow.sync_flag))
         cowValues.push(database.encrypt(cow.deleted_flag))
         cowValues.push(req.params.herd_id)
-        cowValues.push(req.header("user_id"))
+        cowValues.push(req.user.id)
 
         values.push(cowValues)
     });
@@ -226,11 +209,8 @@ router.post("/api/herds/:herd_id/cows", (req, res) => {
 
 })
 
-router.put("/api/herds/:herd_id", (req, res) => {
+router.put("/api/herds/:herd_id", authenticateToken, (req, res) => {
 
-    if(req.header("user_id") == null){
-        return res.status(400).send(JSON.stringify("user_id header is null"))
-    }
 
     var id = req.body.id
     var herd_id = req.body.herd_id
@@ -240,10 +220,10 @@ router.put("/api/herds/:herd_id", (req, res) => {
     var modify_date = req.body.modify_date
     var sync_flag = database.encrypt(req.body.sync_flag)
     var deleted_flag = database.encrypt(req.body.deleted_flag)
-    var user_id = req.header("user_id")
+    var user_id = req.user.id
 
     database().query("UPDATE herds SET id = ?, herd_id = ?, location = ?, milkingSystem = ?, pin = ?, modify_date = ?, sync_flag = ?, deleted_flag= ?, user_id = ? WHERE herd_id = ? AND user_id = ?",
-        [id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id, req.params.herd_id, req.header("user_id")], (err, rows, fields) => {
+        [id, herd_id, location, milkingSystem, pin, modify_date, sync_flag, deleted_flag, user_id, req.params.herd_id, req.user.id], (err, rows, fields) => {
 
             if (err != null) {
                 return res.status(500).send(JSON.stringify(err))
@@ -255,13 +235,9 @@ router.put("/api/herds/:herd_id", (req, res) => {
 
 })
 
-router.delete("/api/herds/:herd_id", (req, res) => {
+router.delete("/api/herds/:herd_id", authenticateToken, (req, res) => {
 
-    if(req.header("user_id") == null){
-        return res.status(400).send(JSON.stringify("user_id header is null"))
-    }
-    
-    database().query("DELETE FROM herds WHERE herd_id = ? AND user_id = ?", [req.params.herd_id, req.header("user_id")], (err, rows, fields) => {
+    database().query("DELETE FROM herds WHERE herd_id = ? AND user_id = ?", [req.params.herd_id, req.user.id], (err, rows, fields) => {
 
         if (err != null) {
             return res.status(500).send(JSON.stringify(err))

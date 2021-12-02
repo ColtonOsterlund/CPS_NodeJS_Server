@@ -2,9 +2,10 @@ var express = require('express')
 router = express.Router()
 const { v4: uuidv4 } = require("uuid")
 var database = require('../database')
+const { authenticateToken } = require('../middleware/authentication')
 
 
-router.get("/api/users", (req, res) => {
+router.get("/api/users", authenticateToken, (req, res) => {
 
     database().query("SELECT * FROM users", [], (err, rows, fields) => {
 
@@ -98,11 +99,14 @@ router.post("/api/users/login", (req, res) => {
                 }
                 else if(response){
                     //passwords match
+                    const { password, ...payload } = rows[0]
 
+                    token = jwt.sign({_id: payload}, process.env.TOKEN_SECRET, {expiresIn: '168h'})
+                    return res.status(200).send(JSON.stringify({token}))
                 }
                 else{
                     //passwords dont match
-
+                    return res.status(400).send(JSON.stringify("Incorrect email address or password"))
                 }
             })
 
@@ -113,13 +117,11 @@ router.post("/api/users/login", (req, res) => {
 })
 
 
-
-router.get("/api/users/logout", (req, res) => {
+router.get("/api/users/logout", authenticateToken, (req, res) => {
 
    
 
 })
-
 
 
 module.exports = router;
