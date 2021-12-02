@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 const herd_routes = require('./routes/herds')
 app.use(herd_routes)
 
