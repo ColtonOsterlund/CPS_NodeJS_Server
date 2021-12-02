@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const dotenv = require('dotenv')
+const crypto = require('crypto')
 dotenv.config()
 
 const pool = mysql.createPool({ //connection pool 
