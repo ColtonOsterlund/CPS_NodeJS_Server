@@ -36,49 +36,47 @@ router.get("/api/users", authenticateToken, (req, res) => {
 
 router.post("/api/users", (req, res) => {
 
-    var query = "INSERT INTO users (id, email, password, first_name, last_name, main_address, secondary_address, city, province, country, zip_code, phone, admin_flag) VALUES ?"
+    var query = "INSERT INTO users (id, email, password, first_name, last_name, main_address, secondary_address, city, province, country, zip_code, phone, admin_flag) VALUES ?;"
 
     var values = [[]]
 
     req.body.users.forEach(function (user) {
         var userValues = []
 
-        bcrypt.hash(user.password, 10, function(err, hashPass){
-            if(err){
-                console.log("error while hashing password: " + err)
-                return res.status(500).send(JSON.stringify(err))	
-            }
-            else{
-                userValues.push(uuidv4())
-                userValues.push(encrypt(user.email))
-                userValues.push(hashPass)
-                userValues.push(encrypt(user.first_name))
-                userValues.push(encrypt(user.last_name))
-                userValues.push(encrypt(user.main_address))
-                userValues.push(encrypt(user.secondary_address))
-                userValues.push(encrypt(user.city))
-                userValues.push(encrypt(user.province))
-                userValues.push(encrypt(user.country))
-                userValues.push(encrypt(user.zip_code))
-                userValues.push(encrypt(user.phone))
-                userValues.push(encrypt(user.admin_flag))
-    
-                values.push(userValues)
+        try{
+            const hashPass = bcrypt.hashSync(user.password, 10)
+            userValues.push(uuidv4())
+            userValues.push(encrypt(user.email))
+            userValues.push(hashPass)
+            userValues.push(encrypt(user.first_name))
+            userValues.push(encrypt(user.last_name))
+            userValues.push(encrypt(user.main_address))
+            userValues.push(encrypt(user.secondary_address))
+            userValues.push(encrypt(user.city))
+            userValues.push(encrypt(user.province))
+            userValues.push(encrypt(user.country))
+            userValues.push(encrypt(user.zip_code))
+            userValues.push(encrypt(user.phone))
+            userValues.push(encrypt(user.admin_flag))
 
-                database().query(query, values, (err, rows, fields) => {
-
-                    if (err != null) {
-                        return res.status(500).send(JSON.stringify(err))
-                    }
-                    else{
-                        return res.status(201).send(JSON.stringify("Success"))
-                    }
-            
-                })
-
-            }
-        })
+            values.push(userValues)
+        }
+        catch(e){
+            res.status(500).send(JSON.stringify(e))
+        }
+        
     });
+
+    database().query(query, values, (err, rows, fields) => {
+
+        if (err != null) {
+            return res.status(500).send(JSON.stringify(err))
+        }
+        else{
+            return res.status(201).send(JSON.stringify("Success"))
+        }
+
+    })
 
 })
 
