@@ -9,14 +9,14 @@ router.get("/api/users", (req, res) => {
     database().query("SELECT * FROM users", [], (err, rows, fields) => {
 
         if (err != null) {
-            return res.status(500).send(err)
+            return res.status(500).send(JSON.stringify(err))
         }
 
         var jsonObjects = []
 
         rows.forEach(function (user) {
             var userObject = {
-                id: database.decrypt(user.id),
+                id: user.id,
                 email: database.decrypt(user.email),
                 admin_flag: database.decrypt(user.admin_flag)
             }
@@ -40,47 +40,83 @@ router.post("/api/users", (req, res) => {
 
     req.body.users.forEach(function (user) {
         var userValues = []
-        userValues.push()
 
-        values.push(userValues)
+        bcrypt.hash(req.body.password, 10, function(err, hashPass){
+            if(err){
+                console.log("error while hashing password: " + err)
+                return res.status(500).send(JSON.stringify(err))	
+            }
+            else{
+                userValues.push(uuidv4())
+                userValues.push(database.encrypt(user.email))
+                userValues.push(hashPass)
+                userValues.push(database.encrypt(user.first_name))
+                userValues.push(database.encrypt(user.last_name))
+                userValues.push(database.encrypt(user.main_address))
+                userValues.push(database.encrypt(user.secondary_address))
+                userValues.push(database.encrypt(user.city))
+                userValues.push(database.encrypt(user.province))
+                userValues.push(database.encrypt(user.country))
+                userValues.push(database.encrypt(user.zip_code))
+                userValues.push(database.encrypt(user.phone))
+                userValues.push(database.encrypt(user.admin_flag))
+    
+                values.push(userValues)
+
+                database().query(query, values, (err, rows, fields) => {
+
+                    if (err != null) {
+                        return res.status(500).send(JSON.stringify(err))
+                    }
+                    else{
+                        return res.status(201).send(JSON.stringify("Success"))
+                    }
+            
+                })
+
+            }
+        })
     });
 
-    database().query(query, values, (err, rows, fields) => {
+})
+
+
+
+router.post("/api/users/login", (req, res) => {
+
+    database().query("SELECT * FROM users where email = ?", [database.encrypt(req.body.email)], (err, rows, fields) => {
 
         if (err != null) {
-            return res.status(500).send(err)
+            return res.status(500).send(JSON.stringify(err))
         }
+        else{
 
-        return res.status(200).send("Success")
+            bcrypt.compare(req.body.password, rows[0].password, function(err, response){
+        
+                if(err){
+                    return res.status(500).send(JSON.stringify(err))
+                }
+                else if(response){
+                    //passwords match
+
+                }
+                else{
+                    //passwords dont match
+
+                }
+            })
+
+        }
 
     })
 
 })
 
-router.post("/api/users/login", (req, res) => {
-
-    return res.status(500).send("Route neot yet implemented")
-
-})
 
 
 router.get("/api/users/logout", (req, res) => {
 
-    if(req.header("user_id") == null){
-        return res.status(400).send("user_id header is null")
-    }
-
-    var expirationTimestamp = ((new Date().getTime() / 86400000) + 7) * 86400000; //UNIX timestamp 1 week in the future
-
-    database().query("INSERT INTO blacklisted_jwts (token, expiration) VALUES ?", [encrypt(req.header("user_authentication")), expirationTimestamp], (err, rows, fields) => {
-
-        if (err != null) {
-            return res.status(500).send(err)
-        }
-
-        return res.status(200).send("Success")
-
-    })
+   
 
 })
 

@@ -6,21 +6,21 @@ var database = require('../database')
 router.get("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
 
     if(req.header("user_id") == null){
-        return res.status(400).send("user_id header is null")
+        return res.status(400).send(JSON.stringify("user_id header is null"))
     }
 
-    database().query("SELECT * FROM calciulate_tests WHERE calciulate_test_id = ? AND user_id = ?", [database.encrypt(req.params.calciulate_test_id), database.encrypt(req.header("user_id"))], (err, rows, fields) => {
+    database().query("SELECT * FROM calciulate_tests WHERE calciulate_test_id = ? AND user_id = ?", [req.params.calciulate_test_id, req.header("user_id")], (err, rows, fields) => {
 
         if (err != null) {
-            return res.status(500).send(err)
+            return res.status(500).send(JSON.stringify(err))
         }
 
         var jsonObjects = []
 
         rows.forEach(function (strip_test) {
             var calciulate_testObject = {
-                id: database.decrypt(calciulate_test.id),
-                calciulate_test_id: database.decrypt(calciulate_test.calciulate_test_id),
+                id: calciulate_test.id,
+                calciulate_test_id: calciulate_test.calciulate_test_id,
                 units: database.decrypt(calciulate_test.units),
                 millivolts: database.decrypt(calciulate_test.millivolts),
                 result: database.decrypt(calciulate_test.result),
@@ -48,8 +48,8 @@ router.get("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
                 culled: database.decrypt(calciulate_test.culled),
                 sync_flag: database.decrypt(calciulate_test.sync_flag),
                 deleted_flag: database.decrypt(calciulate_test.deleted_flag),
-                cow_id: database.decrypt(calciulate_test.cow_id),
-                user_id: database.decrypt(calciulate_test.user_id)
+                cow_id: calciulate_test.cow_id,
+                user_id: calciulate_test.user_id
             }
 
             jsonObjects.push(calciulate_testObject)
@@ -65,11 +65,11 @@ router.get("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
 router.put("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
 
     if(req.header("user_id") == null){
-        return res.status(400).send("user_id header is null")
+        return res.status(400).send(JSON.stringify("user_id header is null"))
     }
 
-    var id = database.encrypt(req.body.id)
-    var calciulate_test_id = database.encrypt(req.body.calciulate_test_id)
+    var id = req.body.id
+    var calciulate_test_id = req.body.calciulate_test_id
     var units = database.encrypt(req.body.units)
     var millivolts = database.encrypt(req.body.millivolts)
     var result = database.encrypt(req.body.result)
@@ -97,8 +97,8 @@ router.put("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
     var animal_registration_no_nlid = database.encrypt(req.body.animal_registration_no_nlid)
     var dam_breed = database.encrypt(req.body.dam_breed)
     var culled = database.encrypt(req.body.culled)
-    var cow_id = database.encrypt(req.params.cow_id)
-    var user_id = database.encrypt(req.header("user_id"))
+    var cow_id = req.params.cow_id
+    var user_id = req.header("user_id")
 
     database().query("UPDATE calciulate_tests SET id = ?, calciulate_test_id = ?, units = ?, millivolts = ?, result = ?, milk_fever = ?, folllow_up_num = ?, sync_flag = ?, deleted_flag = ?, days_in_milk = ?, "
         + "dry_off_day = ?, mastitis_history = ?, method_of_dry_off = ?, daily_milk_average = ?, parity = ?, reproduction_status = ?, number_of_times_bred = ?, farm_breeding_index = ?, lactation_number = ?, days_carried_calf_if_pregnant = ?, "
@@ -107,13 +107,13 @@ router.put("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
         [id, calciulate_test_id, units, millivolts, result, milk_fever, follow_up_num, sync_flag, deleted_flag, days_in_milk, dry_off_day,
             mastitis_history, method_of_dry_off, daily_milk_average, parity, reproduction_status, number_of_times_bred, farm_breeding_index, lactation_number,
             days_carried_calf_if_pregnant, projected_due_date, current_305_day_milk, current_somatic_cell_count, linear_score_at_last_test, date_of_last_clinical_mastitis,
-            chain_visible_id, animal_registration_no_nlid, dam_breed, culled, cow_id, user_id, database.encrypt(req.params.calciulate_test_id), database.encrypt(req.header("user_id"))], (err, rows, fields) => {
+            chain_visible_id, animal_registration_no_nlid, dam_breed, culled, cow_id, user_id, req.params.calciulate_test_id, req.header("user_id")], (err, rows, fields) => {
 
                 if (err != null) {
-                    return res.status(500).send(err)
+                    return res.status(500).send(JSON.stringify(err))
                 }
 
-                return res.status(200).send("Success")
+                return res.status(200).send(JSON.stringify("Success"))
 
             })
 })
@@ -121,16 +121,16 @@ router.put("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
 router.delete("/api/calciulate_tests/:calciulate_test_id", (req, res) => {
 
     if(req.header("user_id") == null){
-        return res.status(400).send("user_id header is null")
+        return res.status(400).send(JSON.stringify("user_id header is null"))
     }
 
-    database().query("DELETE FROM calciulate_tests WHERE calciulate_test_id = ? AND user_id = ?", [database.encrypt(req.params.calciulate_test_id), database.encrypt(req.header("user_id"))], (err, rows, fields) => {
+    database().query("DELETE FROM calciulate_tests WHERE calciulate_test_id = ? AND user_id = ?", [req.params.calciulate_test_id, req.header("user_id")], (err, rows, fields) => {
 
         if (err != null) {
-            return res.status(500).send(err)
+            return res.status(500).send(JSON.stringify(err))
         }
 
-        return res.status(200).send("Success")
+        return res.status(200).send(JSON.stringify("Success"))
 
     })
 
