@@ -1,1 +1,30 @@
-{"scripts":{"test":"echo \"Error: no test specified\" && exit 1","start":"node app.js"},"dependencies":{"bcryptjs":"^2.4.3","crypto":"^1.0.1","dotenv":"^10.0.0","express":"^4.17.1","jsonwebtoken":"^8.5.1","mysql":"^2.18.1","uuid":"^8.3.2"}}
+{
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "name": "cps_nodejs_server",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ColtonOsterlund/CPS_NodeJS_Server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ColtonOsterlund/CPS_NodeJS_Server/issues"
+  },
+  "homepage": "https://github.com/ColtonOsterlund/CPS_NodeJS_Server#readme",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "mysql-await": "^2.1.8",
+    "uuid": "^8.3.2"
+  }
+}
