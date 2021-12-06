@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS calciulate_tests (
   animal_registration_no_nlid VARCHAR(255) NOT NULL,
   dam_breed VARCHAR(255) NOT NULL,
   culled TINYINT NOT NULL DEFAULT 0,
+  modify_date DATETIME NOT NULL,
   sync_flag TINYINT NOT NULL DEFAULT 0,
   deleted_flag TINYINT NOT NULL DEFAULT 0,
   cow_id BINARY(16) NOT NULL,
