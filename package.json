@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "mysql-await": "^2.1.8",
+    "sql-template-strings": "^2.2.2",
     "uuid": "^8.3.2"
   }
 }
