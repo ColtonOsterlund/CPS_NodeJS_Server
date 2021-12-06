@@ -1,7 +1,8 @@
 {
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "name": "cps_nodejs_server",
   "version": "1.0.0",
@@ -26,5 +27,8 @@
     "mysql-await": "^2.1.8",
     "sql-template-strings": "^2.2.2",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
