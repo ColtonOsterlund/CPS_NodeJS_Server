@@ -1,34 +1,22 @@
-const express = require('express')
-const app = express()
+require('dotenv').config();
 
-app.use(express.json())
+const express = require('express');
 
-const herd_routes = require('./routes/herds')
-app.use(herd_routes)
+const app = express();
 
-const cow_routes = require('./routes/cows')
-app.use(cow_routes)
+const hostname = process.env.HOST || 'localhost';
+const port = process.env.PORT || 3000;
 
-const calciulate_test_routes = require('./routes/calciulate_tests')
-app.use(calciulate_test_routes)
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-const user_routes = require('./routes/users')
-app.use(user_routes)
+app.use('/api/users/', require('./routes/api/users'));
+app.use('/api/herds/', require('./routes/api/herds'));
+app.use('/api/cows/', require('./routes/api/cows'));
+app.use('/api/calciulate-tests/', require('./routes/api/calciulate_tests'));
 
-const dotenv = require('dotenv')
-dotenv.config()
+app.get('/', (req, res) => {
+  res.send('ROOT');
+});
 
-app.get("/", (req, res) => {
-  res.send("ROOT")
-})
-
-const PORT = process.env.PORT
-
-if(PORT != undefined){
-  app.listen(process.env.PORT, () => {
-    console.log("Server is up and listening on " + process.env.PORT)
-  })
-}
-else{
-  console.log("PORT is undefined")
-}
+app.listen(port, () => console.log(`Server started on ${hostname}:${port}`));
