@@ -88,4 +88,13 @@ module.exports = {
 
     return result;
   },
+  blacklistedTokenExists: async (token) => {
+    const result = await db.query(escape`
+      SELECT token
+      FROM blacklisted_jwts
+      WHERE token = ${token}
+    `);
+
+    return result.length > 0;
+  },
 };
