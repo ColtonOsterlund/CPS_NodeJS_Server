@@ -117,12 +117,13 @@ module.exports = {
           chain_visible_id,
           animal_registration_no_nlid,
           dam_breed,
+          culled,
+          modify_date,
           cow_id,
           user_id
         )
         VALUES (
           ${calciulateTest.calciulateTestId},
-          ${calciulateTest.testType},
           ${calciulateTest.units},
           ${calciulateTest.millivolts},
           ${calciulateTest.result},
@@ -148,6 +149,7 @@ module.exports = {
           ${calciulateTest.animalRegistrationNoNlid},
           ${calciulateTest.damBreed},
           ${calciulateTest.culled},
+          ${calciulateTest.modifyDate},
           UUID_TO_BIN(${cowId}),
           UUID_TO_BIN(${userId})
         )
@@ -169,7 +171,7 @@ module.exports = {
           millivolts = ${calciulateTest.millivolts},
           result = ${calciulateTest.result},
           milk_fever = ${calciulateTest.milkFever},
-          follow_up_num = ${calciulateTest.followUpNum}
+          follow_up_num = ${calciulateTest.followUpNum},
           days_in_milk = ${calciulateTest.daysInMilk},
           dry_off_day = ${calciulateTest.dryOffDay},
           mastitis_history = ${calciulateTest.mastitisHistory},
@@ -190,6 +192,7 @@ module.exports = {
           animal_registration_no_nlid = ${calciulateTest.animalRegistrationNoNlid},
           dam_breed = ${calciulateTest.damBreed},
           culled = ${calciulateTest.culled},
+          modify_date = ${calciulateTest.modifyDate}
         WHERE id = UUID_TO_BIN(${id})
         AND user_id = UUID_TO_BIN(${userId})
       `);

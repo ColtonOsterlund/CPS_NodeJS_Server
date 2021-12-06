@@ -89,7 +89,6 @@ router.get('/:cowId/calciulate-tests', authenticateToken, async (req, res) => {
 router.post('/:cowId/calciulate-tests', authenticateToken, async (req, res) => {
   if (
     !req.body?.calciulateTestId ||
-    !req.body?.testType ||
     !req.body?.units ||
     !req.body?.millivolts ||
     !req.body?.result ||
@@ -121,12 +120,32 @@ router.post('/:cowId/calciulate-tests', authenticateToken, async (req, res) => {
 
   const calciulateTest = {
     calciulateTestId: req.body.calciulateTestId,
-    testType: req.body.testType,
     units: req.body.units,
     millivolts: req.body.millivolts,
     result: req.body.result,
     milkFever: req.body.milkFever,
     followUpNum: req.body.followUpNum,
+    daysInMilk: req.body.daysInMilk,
+    dryOffDay: req.body.dryOffDay,
+    mastitisHistory: req.body.mastitisHistory,
+    methodOfDryOff: req.body.methodOfDryOff,
+    dailyMilkAverage: req.body.dailyMilkAverage,
+    parity: req.body.parity,
+    reproductionStatus: req.body.reproductionStatus,
+    numberOfTimesBred: req.body.numberOfTimesBred,
+    farmBreedingIndex: req.body.farmBreedingIndex,
+    lactationNumber: req.body.lactationNumber,
+    daysCarriedCalfIfPregnant: req.body.daysCarriedCalfIfPregnant,
+    projectedDueDate: req.body.projectedDueDate,
+    current305DayMilk: req.body.current305DayMilk,
+    currentSomaticCellCount: req.body.currentSomaticCellCount,
+    linearScoreAtLastTest: req.body.linearScoreAtLastTest,
+    dateOfLastClinicalMastitis: req.body.dateOfLastClinicalMastitis,
+    chainVisibleId: req.body.chainVisibleId,
+    animalRegistrationNoNlid: req.body.animalRegistrationNoNlid,
+    damBreed: req.body.damBreed,
+    culled: req.body.culled,
+    modifyDate: mySqlDateTimeNow(),
   };
 
   // TODO: Check if there was an error in updating

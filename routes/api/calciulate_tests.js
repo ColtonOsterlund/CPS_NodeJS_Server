@@ -5,6 +5,7 @@ const {
   deleteCalciulateTest,
 } = require('../../database/calciulate_tests');
 const { authenticateToken } = require('../../middleware/authentication');
+const { mySqlDateTimeNow } = require('../../utils/date_time');
 
 const router = express.Router();
 
@@ -19,7 +20,6 @@ router.get('/:calciulateTestId', authenticateToken, async (req, res) => {
 router.put('/:calciulateTestId', authenticateToken, async (req, res) => {
   if (
     !req.body?.calciulateTestId ||
-    !req.body?.testType ||
     !req.body?.units ||
     !req.body?.millivolts ||
     !req.body?.result ||
@@ -51,7 +51,6 @@ router.put('/:calciulateTestId', authenticateToken, async (req, res) => {
 
   const calciulateTest = {
     calciulateTestId: req.body.calciulateTestId,
-    testType: req.body.testType,
     units: req.body.units,
     millivolts: req.body.millivolts,
     result: req.body.result,
@@ -77,6 +76,7 @@ router.put('/:calciulateTestId', authenticateToken, async (req, res) => {
     animalRegistrationNoNlid: req.body.animalRegistrationNoNlid,
     damBreed: req.body.damBreed,
     culled: req.body.culled,
+    modifyDate: mySqlDateTimeNow(),
   };
 
   // TODO: Check if there was an error in updating
