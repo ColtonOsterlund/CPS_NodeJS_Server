@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS calciulate_tests (
   animal_registration_no_nlid INT NOT NULL,
   dam_breed VARCHAR(255) NOT NULL,
   culled TINYINT NOT NULL DEFAULT 0,
+  modify_date DATETIME NOT NULL,
   sync_flag TINYINT NOT NULL DEFAULT 0,
   deleted_flag TINYINT NOT NULL DEFAULT 0,
   cow_id BINARY(16) NOT NULL,
@@ -134,7 +135,6 @@ CREATE TABLE IF NOT EXISTS calciulate_tests (
   FOREIGN KEY (cow_id) REFERENCES cows (id),
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
-
 
 CREATE TRIGGER calciulate_tests_uuid
 BEFORE INSERT ON calciulate_tests

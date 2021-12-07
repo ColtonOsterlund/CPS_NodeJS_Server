@@ -9,7 +9,8 @@ module.exports = {
         herd_id AS herdId,
         location,
         milking_system AS milkingSystem,
-        pin
+        pin,
+        modify_date AS modifyDate
       FROM herds
       WHERE user_id = UUID_TO_BIN(${userId})
     `);
@@ -24,7 +25,8 @@ module.exports = {
           herd_id AS herdId,
           location,
           milking_system AS milkingSystem,
-          pin
+          pin,
+          modify_date AS modifyDate
         FROM herds
         WHERE id = UUID_TO_BIN(${id})
         AND user_id = UUID_TO_BIN(${userId})

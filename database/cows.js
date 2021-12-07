@@ -28,6 +28,7 @@ module.exports = {
           animal_registration_no_nlid AS animalRegistrationNoNlid,
           dam_breed AS damBreed,
           culled,
+          modify_date AS modifyDate,
           BIN_TO_UUID(herd_id) AS herdId
         FROM cows
         WHERE herd_id = UUID_TO_BIN(${herdId})
@@ -66,6 +67,7 @@ module.exports = {
           animal_registration_no_nlid AS animalRegistrationNoNlid,
           dam_breed AS damBreed,
           culled,
+          modify_date AS modifyDate,
           BIN_TO_UUID(herd_id) AS herdId
         FROM cows
         WHERE id = UUID_TO_BIN(${id})
