@@ -12,6 +12,7 @@ const pool = mysql.createPool({ //connection pool
   })
 
  module.exports = {
+	//depreciated
 	encrypt:(text) => {
 		if (text == null) {
 			return text;
@@ -21,6 +22,7 @@ const pool = mysql.createPool({ //connection pool
 		crypted += cipher.final('hex')
 		return crypted
 	 },
+	 //depreciated
 	 decrypt:(text) => {
 		if (text == null) {
 			return text;

@@ -1,5 +1,9 @@
 const escape = require('sql-template-strings');
 const db = require('./connection');
+const {
+  encrypt,
+  decrypt
+} = require('../../encryption');
 
 module.exports = {
   readCalciulateTests: async (cowId, userId) => {
