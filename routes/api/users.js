@@ -18,17 +18,17 @@ router.get('/', authenticateToken, async (req, res) => {
 
 router.post('/', async (req, res) => {
   if (
-    !req.body?.email ||
-    !req.body?.password ||
-    !req.body?.firstName ||
-    !req.body?.lastName ||
-    !req.body?.mainAddress ||
-    !req.body?.secondaryAddress === undefined ||
-    !req.body?.city ||
-    !req.body?.province ||
-    !req.body?.country ||
-    !req.body?.zipCode ||
-    !req.body?.phone
+    req.body?.email === undefined ||
+    req.body?.password === undefined ||
+    req.body?.firstName === undefined ||
+    req.body?.lastName === undefined ||
+    req.body?.mainAddress === undefined ||
+    req.body?.secondaryAddress === undefined === undefined ||
+    req.body?.city === undefined ||
+    req.body?.province === undefined ||
+    req.body?.country === undefined ||
+    req.body?.zipCode === undefined ||
+    req.body?.phone === undefined
   ) {
     return res.status(400).json({ message: 'Missing fields in request body' });
   }

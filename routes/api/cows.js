@@ -16,27 +16,27 @@ router.get('/:cowId', authenticateToken, async (req, res) => {
 
 router.put('/:cowId', authenticateToken, async (req, res) => {
   if (
-    !req.body?.cowId ||
-    !req.body?.daysInMilk ||
-    !req.body?.dryOffDay ||
-    !req.body?.mastitisHistory ||
-    !req.body?.methodOfDryOff ||
-    !req.body?.dailyMilkAverage ||
-    !req.body?.parity ||
-    !req.body?.reproductionStatus ||
-    !req.body?.numberOfTimesBred ||
-    !req.body?.farmBreedingIndex ||
-    !req.body?.lactationNumber ||
-    !req.body?.daysCarriedCalfIfPregnant ||
-    !req.body?.projectedDueDate ||
-    !req.body?.current305DayMilk ||
-    !req.body?.currentSomaticCellCount ||
-    !req.body?.linearScoreAtLastTest ||
-    !req.body?.dateOfLastClinicalMastitis ||
-    !req.body?.chainVisibleId ||
-    !req.body?.animalRegistrationNoNlid ||
-    !req.body?.damBreed ||
-    !req.body?.culled
+    req.body?.cowId === undefined ||
+    req.body?.daysInMilk === undefined ||
+    req.body?.dryOffDay === undefined ||
+    req.body?.mastitisHistory === undefined ||
+    req.body?.methodOfDryOff === undefined ||
+    req.body?.dailyMilkAverage === undefined ||
+    req.body?.parity === undefined ||
+    req.body?.reproductionStatus === undefined ||
+    req.body?.numberOfTimesBred === undefined ||
+    req.body?.farmBreedingIndex === undefined ||
+    req.body?.lactationNumber === undefined ||
+    req.body?.daysCarriedCalfIfPregnant === undefined ||
+    req.body?.projectedDueDate === undefined ||
+    req.body?.current305DayMilk === undefined ||
+    req.body?.currentSomaticCellCount === undefined ||
+    req.body?.linearScoreAtLastTest === undefined ||
+    req.body?.dateOfLastClinicalMastitis === undefined ||
+    req.body?.chainVisibleId === undefined ||
+    req.body?.animalRegistrationNoNlid === undefined ||
+    req.body?.damBreed === undefined ||
+    req.body?.culled === undefined
   ) {
     return res.status(400).json({ message: 'Missing fields in request body' });
   }
@@ -98,7 +98,7 @@ console.log(req.body)
     req.body?.millivolts === undefined ||
     req.body?.result === undefined ||
     req.body?.milkFever === undefined ||
-    req.body?.followUpNum === undefined === undefined ||
+    req.body?.followUpNum === undefined ||
     req.body?.daysInMilk === undefined ||
     req.body?.dryOffDay === undefined ||
     req.body?.mastitisHistory === undefined ||
