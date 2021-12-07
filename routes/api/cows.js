@@ -87,6 +87,11 @@ router.get('/:cowId/calciulate-tests', authenticateToken, async (req, res) => {
 });
 
 router.post('/:cowId/calciulate-tests', authenticateToken, async (req, res) => {
+
+console.log(req.body)
+
+
+
   if (
     !req.body?.calciulateTestId ||
     !req.body?.units ||
