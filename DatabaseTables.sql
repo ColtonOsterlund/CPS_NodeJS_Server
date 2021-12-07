@@ -3,11 +3,14 @@ DROP TABLE IF EXISTS cows;
 DROP TABLE IF EXISTS herds;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS blacklisted_jwts;
+-- DROP TRIGGER IF EXISTS users_uuid;
+-- DROP TRIGGER IF EXISTS cows_uuid;
+-- DROP TRIGGER IF EXISTS herds_uuid;
+-- DROP TRIGGER IF EXISTS calciulate_tests_uuid;
 
 CREATE TABLE IF NOT EXISTS blacklisted_jwts (
-  token VARCHAR(768) NOT NULL,
-  expiration INT NOT NULL,
-  PRIMARY KEY (token)
+  token TEXT(8000) NOT NULL,
+  expiration INT NOT NULL
 );
 
 CREATE EVENT IF NOT EXISTS delete_jwts
