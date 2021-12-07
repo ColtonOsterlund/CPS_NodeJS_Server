@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS blacklisted_jwts;
 -- DROP TRIGGER IF EXISTS herds_uuid;
 -- DROP TRIGGER IF EXISTS calciulate_tests_uuid;
 
+
 CREATE TABLE IF NOT EXISTS blacklisted_jwts (
   token TEXT(8000) NOT NULL,
   expiration INT NOT NULL
@@ -23,7 +24,7 @@ DO
 -- Otherwise, use the triggers
 
 CREATE TABLE IF NOT EXISTS users (
-  id BINARY(16),
+  id VARCHAR(255),
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   first_name VARCHAR(255) NOT NULL,
@@ -39,13 +40,13 @@ CREATE TABLE IF NOT EXISTS users (
   PRIMARY KEY (id)
 );
 
-CREATE TRIGGER users_uuid
-BEFORE INSERT ON users
-FOR EACH ROW
-SET NEW.id = UUID_TO_BIN(UUID());
+-- CREATE TRIGGER users_uuid
+-- BEFORE INSERT ON users
+-- FOR EACH ROW
+-- SET NEW.id = UUID();
 
 CREATE TABLE IF NOT EXISTS herds (
-  id BINARY(16),
+  id VARCHAR(255),
   herd_id INT NOT NULL,
   location VARCHAR(255) NOT NULL,
   milking_system VARCHAR(255) NOT NULL,
@@ -58,13 +59,13 @@ CREATE TABLE IF NOT EXISTS herds (
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TRIGGER herds_uuid
-BEFORE INSERT ON herds
-FOR EACH ROW
-SET NEW.id = UUID_TO_BIN(UUID());
+-- CREATE TRIGGER herds_uuid
+-- BEFORE INSERT ON herds
+-- FOR EACH ROW
+-- SET NEW.id = UUID();
 
 CREATE TABLE IF NOT EXISTS cows (
-  id BINARY(16),
+  id VARCHAR(255),
   cow_id INT NOT NULL,
   days_in_milk INT NOT NULL,
   dry_off_day INT NOT NULL,
@@ -96,13 +97,13 @@ CREATE TABLE IF NOT EXISTS cows (
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TRIGGER cows_uuid
-BEFORE INSERT ON cows
-FOR EACH ROW
-SET NEW.id = UUID_TO_BIN(UUID());
+-- CREATE TRIGGER cows_uuid
+-- BEFORE INSERT ON cows
+-- FOR EACH ROW
+-- SET NEW.id = UUID();
 
 CREATE TABLE IF NOT EXISTS calciulate_tests (
-  id BINARY(16),
+  id VARCHAR(255),
   calciulate_test_id INT NOT NULL,
   units VARCHAR(255) NOT NULL,
   millivolts FLOAT NOT NULL,
@@ -139,7 +140,7 @@ CREATE TABLE IF NOT EXISTS calciulate_tests (
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TRIGGER calciulate_tests_uuid
-BEFORE INSERT ON calciulate_tests
-FOR EACH ROW
-SET NEW.id = UUID_TO_BIN(UUID());
+-- CREATE TRIGGER calciulate_tests_uuid
+-- BEFORE INSERT ON calciulate_tests
+-- FOR EACH ROW
+-- SET NEW.id = UUID();

@@ -93,7 +93,7 @@ router.post('/:cowId/calciulate-tests', authenticateToken, async (req, res) => {
     !req.body?.millivolts ||
     !req.body?.result ||
     !req.body?.milkFever ||
-    !req.body?.followUpNum ||
+    req.body?.followUpNum === undefined ||
     !req.body?.daysInMilk ||
     !req.body?.dryOffDay ||
     !req.body?.mastitisHistory ||
