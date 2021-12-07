@@ -20,7 +20,7 @@ DO
 -- Otherwise, use the triggers
 
 CREATE TABLE IF NOT EXISTS users (
-  id BINARY(16) DEFAULT(UUID_TO_BIN(UUID())),
+  id BINARY(16),
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   first_name VARCHAR(255) NOT NULL,
@@ -42,7 +42,7 @@ FOR EACH ROW
 SET NEW.id = UUID_TO_BIN(UUID());
 
 CREATE TABLE IF NOT EXISTS herds (
-  id BINARY(16) DEFAULT (UUID_TO_BIN(UUID())),
+  id BINARY(16),
   herd_id INT NOT NULL,
   location VARCHAR(255) NOT NULL,
   milking_system VARCHAR(255) NOT NULL,
@@ -61,7 +61,7 @@ FOR EACH ROW
 SET NEW.id = UUID_TO_BIN(UUID());
 
 CREATE TABLE IF NOT EXISTS cows (
-  id BINARY(16) DEFAULT (UUID_TO_BIN(UUID())),
+  id BINARY(16),
   cow_id INT NOT NULL,
   days_in_milk INT NOT NULL,
   dry_off_day INT NOT NULL,
@@ -99,7 +99,7 @@ FOR EACH ROW
 SET NEW.id = UUID_TO_BIN(UUID());
 
 CREATE TABLE IF NOT EXISTS calciulate_tests (
-  id BINARY(16) DEFAULT (UUID_TO_BIN(UUID())),
+  id BINARY(16),
   calciulate_test_id INT NOT NULL,
   units VARCHAR(255) NOT NULL,
   millivolts FLOAT NOT NULL,
