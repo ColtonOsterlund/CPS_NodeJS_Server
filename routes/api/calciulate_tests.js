@@ -14,6 +14,9 @@ router.get('/:calciulateTestId', authenticateToken, async (req, res) => {
     req.params.calciulateTestId,
     req.user.id
   );
+
+  console.log(JSON.stringify(calciulateTest))
+
   res.status(200).json(JSON.stringify(calciulateTest));
 });
 
