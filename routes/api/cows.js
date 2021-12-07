@@ -83,6 +83,10 @@ router.get('/:cowId/calciulate-tests', authenticateToken, async (req, res) => {
     req.params.cowId,
     req.user.id
   );
+
+  console.log(JSON.stringify(calciulateTests))
+
+
   res.status(200).json(JSON.stringify(calciulateTests));
 });
 
