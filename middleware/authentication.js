@@ -4,6 +4,9 @@ const { blacklistedTokenExists } = require('../database/users');
 module.exports = {
   authenticateToken: async (req, res, next) => {
     const authHeader = req.headers['authorization'];
+
+    console.log("AUTH HEADER: " + authHeader)
+
     const token = authHeader && authHeader.split(' ')[1];
 
     if (token == null) {
