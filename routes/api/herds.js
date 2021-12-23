@@ -82,6 +82,9 @@ router.get('/:herdId/cows', authenticateToken, async (req, res) => {
 });
 
 router.post('/:herdId/cows', authenticateToken, async (req, res) => {
+
+  console.log(req.body)
+
   if (
     req.body?.cowId === undefined ||
     req.body?.daysInMilk === undefined ||
