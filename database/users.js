@@ -8,15 +8,15 @@ module.exports = {
         BIN_TO_UUID(id) AS id,
         email,
         password,
-        first_name AS firstName,
-        last_name AS lastName,
-        main_address AS mainAddress,
-        secondary_address AS secondaryAddress,
-        city,
-        province,
-        country,
-        zip_code AS zipCode,
-        phone
+        CAST(AES_DECRYPT(first_name, '${process.env.ENCRYPTION_KEY}') AS firstName,
+        CAST(AES_DECRYPT(last_name, '${process.env.ENCRYPTION_KEY}') AS lastName,
+        CAST(AES_DECRYPT(main_address, '${process.env.ENCRYPTION_KEY}') AS mainAddress,
+        CAST(AES_DECRYPT(secondary_address, '${process.env.ENCRYPTION_KEY}') AS secondaryAddress,
+        CAST(AES_DECRYPT(city, '${process.env.ENCRYPTION_KEY}') AS city,
+        CAST(AES_DECRYPT(province, '${process.env.ENCRYPTION_KEY}') AS province,
+        CAST(AES_DECRYPT(country, '${process.env.ENCRYPTION_KEY}') AS country,
+        CAST(AES_DECRYPT(zip_code, '${process.env.ENCRYPTION_KEY}') AS zipCode,
+        CAST(AES_DECRYPT(phone, '${process.env.ENCRYPTION_KEY}') AS phone
       FROM users
       WHERE email = ${email}
     `);
@@ -56,15 +56,15 @@ module.exports = {
       VALUES (
         ${email},
         ${hash},
-        ${firstName},
-        ${lastName},
-        ${mainAddress},
-        ${secondaryAddress},
-        ${city},
-        ${province},
-        ${country},
-        ${zipCode},
-        ${phone}
+        AES_ENCRYPT(${firstName}, '${process.env.ENCRYPTION_KEY}'),
+        AES_ENCRYPT(${lastName}, '${process.env.ENCRYPTION_KEY}'),
+        AES_ENCRYPT(${mainAddress}, '${process.env.ENCRYPTION_KEY}'),
+        AES_ENCRYPT(${secondaryAddress}, '${process.env.ENCRYPTION_KEY}'),
+        AES_ENCRYPT(${city}, '${process.env.ENCRYPTION_KEY}'),
+        AES_ENCRYPT(${province}, '${process.env.ENCRYPTION_KEY}'),
+        AES_ENCRYPT(${country}, '${process.env.ENCRYPTION_KEY}'),
+        AES_ENCRYPT(${zipCode}, '${process.env.ENCRYPTION_KEY}'),
+        AES_ENCRYPT(${phone}, '${process.env.ENCRYPTION_KEY}')
       )
     `);
 

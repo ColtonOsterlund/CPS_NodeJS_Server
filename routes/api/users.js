@@ -80,7 +80,7 @@ router.post('/login', async (req, res) => {
 
         if (result) {
           const token = jwt.sign(payload, process.env.TOKEN_SECRET, {
-            expiresIn: '168h',
+            expiresIn: '8670h',
           });
           return res.status(200).json({ message: 'Logged in', token: token });
         }
@@ -104,5 +104,6 @@ router.get('/logout', authenticateToken, async (req, res) => {
   const result = await blacklistToken(req.token, req.user.exp);
   res.status(200).json({ message: 'Logged out' });
 });
+
 
 module.exports = router;

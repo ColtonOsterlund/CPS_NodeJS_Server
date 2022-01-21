@@ -27,15 +27,15 @@ CREATE TABLE IF NOT EXISTS users (
   id VARCHAR(255),
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
-  main_address VARCHAR(255) NOT NULL,
-  secondary_address VARCHAR(255),
-  city VARCHAR(255) NOT NULL,
-  province VARCHAR(255) NOT NULL,
-  country VARCHAR(255) NOT NULL,
-  zip_code VARCHAR(255) NOT NULL,
-  phone VARCHAR(255) NOT NULL,
+  first_name BLOB NOT NULL,
+  last_name BLOB NOT NULL,
+  main_address BLOB NOT NULL,
+  secondary_address BLOB,
+  city BLOB NOT NULL,
+  province BLOB NOT NULL,
+  country BLOB NOT NULL,
+  zip_code BLOB NOT NULL,
+  phone BLOB NOT NULL,
   admin_flag TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 );
@@ -144,3 +144,13 @@ CREATE TABLE IF NOT EXISTS calciulate_tests (
 -- BEFORE INSERT ON calciulate_tests
 -- FOR EACH ROW
 -- SET NEW.id = UUID();
+
+ALTER TABLE mj3q374936dbg9dd.herds ADD UNIQUE KEY (id, deleted_flag);
+
+ALTER TABLE mj3q374936dbg9dd.cows ADD CONSTRAINT `herds_deleted_cascade`
+FOREIGN KEY (herd_id, deleted_flag) REFERENCES mj3q374936dbg9dd.herds(id, deleted_flag) ON UPDATE CASCADE;
+
+ALTER TABLE mj3q374936dbg9dd.cows ADD UNIQUE KEY (id, deleted_flag);
+
+ALTER TABLE mj3q374936dbg9dd.calciulate_tests ADD CONSTRAINT `cowss_deleted_cascade`
+FOREIGN KEY (cow_id, deleted_flag) REFERENCES mj3q374936dbg9dd.cows(id, deleted_flag) ON UPDATE CASCADE;

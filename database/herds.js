@@ -13,6 +13,7 @@ module.exports = {
         modify_date AS modifyDate
       FROM herds
       WHERE user_id = UUID_TO_BIN(${userId})
+      AND deleted_flag = 0
     `);
 
     return results;
@@ -30,6 +31,7 @@ module.exports = {
         FROM herds
         WHERE id = UUID_TO_BIN(${id})
         AND user_id = UUID_TO_BIN(${userId})
+        AND deleted_flag = 0
       `);
 
       return results[0] ?? {};
@@ -76,6 +78,7 @@ module.exports = {
           modify_date = ${modifyDate}
         WHERE id = UUID_TO_BIN(${id})
         AND user_id = UUID_TO_BIN(${userId})
+        AND deleted_flag = 0
       `);
       return result;
     } catch (error) {
@@ -86,7 +89,7 @@ module.exports = {
   deleteHerd: async (id, userId) => {
     try {
       const result = await db.query(escape`
-        DELETE FROM herds
+        UPDATE herds SET deleted_flag = 1
         WHERE id = UUID_TO_BIN(${id})
         AND user_id = UUID_TO_BIN(${userId})
       `);

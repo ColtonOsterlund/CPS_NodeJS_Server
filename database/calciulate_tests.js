@@ -38,6 +38,7 @@ module.exports = {
         FROM calciulate_tests
         WHERE cow_id = UUID_TO_BIN(${cowId})
         AND user_id = UUID_TO_BIN(${userId})
+        AND deleted_flag = 0
       `);
 
       return results;
@@ -82,6 +83,7 @@ module.exports = {
         FROM calciulate_tests
         WHERE id = UUID_TO_BIN(${id})
         AND user_id = UUID_TO_BIN(${userId})
+        AND deleted_flag = 0
       `);
 
       return results[0] ?? {};
@@ -197,6 +199,7 @@ module.exports = {
           modify_date = ${calciulateTest.modifyDate}
         WHERE id = UUID_TO_BIN(${id})
         AND user_id = UUID_TO_BIN(${userId})
+        AND deleted_flag = 0
       `);
       return result;
     } catch (error) {
@@ -207,7 +210,7 @@ module.exports = {
   deleteCalciulateTest: async (id, userId) => {
     try {
       const result = await db.query(escape`
-        DELETE FROM calciulate_tests
+        UPDATE calciulate_tests SET deleted_flag = 1
         WHERE id = UUID_TO_BIN(${id})
         AND user_id = UUID_TO_BIN(${userId})
       `);
